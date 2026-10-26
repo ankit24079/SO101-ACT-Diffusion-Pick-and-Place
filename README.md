@@ -6,8 +6,9 @@ Diffusion Policy training workflows for the University of Minnesota MSI cluster.
 
 ## Project status
 
-- Collected 76 selected cube-to-cup demonstration episodes, split into 64 training
-  and 12 validation episodes. Source data is nominally 30 FPS with six joint values
+- Collected 100 cube-to-cup demonstration episodes; selected 76 for the reported
+  experiments, split into 64 training and 12 validation episodes. Source data is
+  nominally 30 FPS with six joint values
   and two 640x480 RGB camera streams.
 - Completed a 100,000-step ACT training run on MSI with four decoder layers and
   held-out checkpoint evaluation. The selected inference checkpoint was step 50,000.
