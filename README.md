@@ -1,4 +1,4 @@
-# CupPilot — SO-101 cube-to-cup imitation learning
+# SO101 ACT & Diffusion Policy — Pick and Place
 
 Recording, offline training and attended ACT inference for a physical LeRobot
 SO-101 leader/follower pair with workspace and wrist cameras. Includes ACT and
