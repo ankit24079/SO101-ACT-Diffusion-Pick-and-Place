@@ -15,8 +15,9 @@ Diffusion Policy training workflows for the University of Minnesota MSI cluster.
   temporal averaging and optional gripper hold/release/close sequences. Placement
   is inconsistent; individual successful trials do not establish a success rate.
 - Prepared Diffusion Policy training on the identical split. Local tests and a
-  one-update CPU training/checkpoint/reload/validation check passed. Full diffusion
-  GPU training had not started when this code was prepared; MSI login is required.
+  one-update CPU training/checkpoint/reload/validation check passed. On October 26,
+  2026, the full-size GPU setup check passed on an NVIDIA A40 and a 100,000-step
+  diffusion training run was launched on MSI. Final validation is pending.
 
 Datasets, trained weights, run logs, generated export archives, actual device
 configuration, and hardware-specific calibration are stored separately and are
