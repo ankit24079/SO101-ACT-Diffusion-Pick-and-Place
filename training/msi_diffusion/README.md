@@ -30,8 +30,9 @@ intact. No CPU PyTorch constraints from the recording image should be applied.
 Run `bash setup_gpu_env.sh` after uploading the code: it creates a separate
 `~/so101/venvs/lerobot-diffusion` environment based on the working ACT CUDA
 Python and writes `~/activate-lerobot-diffusion.sh`. It does not replace the ACT
-environment. This script must be checked against the active MSI environment;
-it has not yet been run remotely.
+environment. It uses the existing ACT environment's Python directly when present,
+so a changed or broken Miniforge module does not prevent activation. Override
+`SO101_ACT_BASE_PYTHON` if that environment is stored elsewhere.
 
 After login, inspect available partitions/GPUs and account authorization before
 submitting. Account `hongj` was used previously. Supply current partition and GPU
