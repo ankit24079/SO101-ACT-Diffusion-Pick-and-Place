@@ -1,23 +1,41 @@
 # SO101 ACT & Diffusion Policy — Pick and Place
 
-Recording, offline training and attended ACT inference for a physical LeRobot
-SO-101 leader/follower pair with workspace and wrist cameras. Includes ACT and
-Diffusion Policy training workflows for the University of Minnesota MSI cluster.
+An end-to-end vision-based robotic manipulation project using a LeRobot SO-101
+leader/follower pair with workspace and wrist cameras. The project combines
+teleoperated demonstration collection, ACT and Diffusion Policy training,
+held-out evaluation, and physical cube-to-cup placement with ACT.
 
-## Project status
+## Project overview
 
 - Target dataset: 100 cube-to-cup demonstration episodes, split into 85 training
   and 15 validation episodes. Source data is nominally 30 FPS with six joint values
   and two 640x480 RGB camera streams.
-- Completed a 100,000-step ACT training run on MSI with four decoder layers and
+- Completed a 100,000-step ACT training run with four decoder layers and
   held-out checkpoint evaluation.
-- Exercised attended ACT inference on the robot, including custom asynchronous
-  temporal averaging and optional gripper hold/release/close sequences. Placement
-  is inconsistent; individual successful trials do not establish a success rate.
-- Prepared Diffusion Policy training on the identical split. Local tests and a
-  one-update CPU training/checkpoint/reload/validation check passed. On October 26,
-  2026, the full-size GPU setup check passed on an NVIDIA A40 and a 100,000-step
-  diffusion training run was launched on MSI. Final validation is pending.
+- Demonstrated autonomous cube-to-cup placement with ACT during attended trials,
+  using asynchronous temporal averaging and gripper hold/release/close control.
+- Trained Diffusion Policy and completed held-out checkpoint evaluation and a
+  causal temporal-ensembling comparison with ACT on the same validation recordings.
+
+## Validation results
+
+Average current-action errors against recorded demonstrations:
+
+| Policy | Temporal ensembling | Mean arm error | Gripper error |
+| --- | --- | ---: | ---: |
+| ACT | Disabled | 1.96 degrees | 1.37 percentage points |
+| ACT | Coefficient -0.5 | 2.08 degrees | 1.47 percentage points |
+| Diffusion Policy | Disabled | 1.31 degrees | 0.84 percentage points |
+| Diffusion Policy | Coefficient -0.5 | 1.44 degrees | 0.97 percentage points |
+
+With temporal ensembling applied to both policies, Diffusion Policy reduced
+mean arm error by **31%** and gripper error by **34%** compared with ACT.
+These are offline imitation errors, not measured pick-and-place success rates.
+The temporal replay assumes predictions at 30 Hz with zero inference latency,
+resets at episode boundaries, and excludes deployment-specific gripper overrides.
+Diffusion temporal averaging is an experimental option; its native execution
+uses an eight-action queue. Physical deployment was demonstrated with ACT;
+Diffusion Policy was evaluated offline.
 
 Datasets, trained weights, run logs, generated export archives, actual device
 configuration, and hardware-specific calibration are stored separately and are
@@ -33,6 +51,7 @@ excluded from this code repository.
 | `scripts/export_msi_dataset.py`, `scripts/package_msi_export.py` | Export the selected train/validation split |
 | [ACT training](training/msi_act/README.md) | Stock LeRobot ACT training and held-out evaluation |
 | [Diffusion training](training/msi_diffusion/README.md) | Diffusion Policy training, validation, CPU smoke test and Slurm launcher |
+| `training/compare_temporal_policies.py` | Causal offline comparison of ACT and Diffusion Policy with and without temporal ensembling |
 | `scripts/act_robot_inference.py` | Attended ACT deployment and diagnostic logging |
 | `scripts/gripper_contact_hold.py` | Optional custom gripper policies and post-release closure |
 | `tests/` | Control, gripper and temporal-averaging checks |
@@ -49,10 +68,10 @@ Create the ignored `config/docker.env` using verified device identities and host
 permissions, and provide the matching local calibration files. Hardware roles must
 be identified by persistent USB paths, not assumed `/dev/ttyACM*` enumeration.
 
-For GPU training, use a separate CUDA environment on MSI. Follow the relevant
+For GPU training, use a separate CUDA environment. Follow the relevant
 training README; do not apply the recording container's CPU constraints to the
-GPU environment. Training expects the separately exported
-`so101-cube-cup-msi-76-val12` dataset package with `splits.json` and native LeRobot
+GPU environment. Training expects a separately exported
+dataset package with `splits.json` and native LeRobot
 `datasets/train` and `datasets/validation` directories.
 
 ## Inference
