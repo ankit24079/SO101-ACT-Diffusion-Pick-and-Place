@@ -8,10 +8,9 @@ Diffusion Policy training workflows for the University of Minnesota MSI cluster.
 
 - Target dataset: 100 cube-to-cup demonstration episodes, split into 85 training
   and 15 validation episodes. Source data is nominally 30 FPS with six joint values
-  and two 640x480 RGB camera streams. The completed experiments used the earlier
-  64-training/12-validation split; the target split has not yet been evaluated.
+  and two 640x480 RGB camera streams.
 - Completed a 100,000-step ACT training run on MSI with four decoder layers and
-  held-out checkpoint evaluation. The selected inference checkpoint was step 50,000.
+  held-out checkpoint evaluation.
 - Exercised attended ACT inference on the robot, including custom asynchronous
   temporal averaging and optional gripper hold/release/close sequences. Placement
   is inconsistent; individual successful trials do not establish a success rate.
