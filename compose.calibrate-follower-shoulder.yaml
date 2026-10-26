@@ -1,0 +1,16 @@
+# Scoped ID 2 manual calibration only; no leader or cameras mapped.
+services:
+  collector:
+    devices:
+      - "${FOLLOWER_PORT:?Identify follower}:/dev/so101-follower:rw"
+    group_add:
+      - "${SERIAL_GID:?Set serial group}"
+    volumes:
+      - type: bind
+        source: ./calibration
+        target: /calibration
+      - type: bind
+        source: ./scripts/calibrate_follower_shoulder.py
+        target: /opt/calibrate_follower_shoulder.py
+        read_only: true
+    command: [python, /opt/calibrate_follower_shoulder.py]

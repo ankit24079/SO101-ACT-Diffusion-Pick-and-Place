@@ -1,0 +1,55 @@
+# Local hardware settings and credentials
+.env
+.env.*
+!.env.example
+config/local.*
+!config/local.env.example
+secrets/
+credentials/
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+.aws/
+.ssh/
+.netrc
+
+# Collected data, training artifacts, and calibration
+data/
+datasets/
+exports/
+outputs/
+checkpoints/
+calibration/
+calibrations/
+**/calibration/
+**/calibrations/
+logs/
+*.log
+wandb/
+rerun/
+*.rrd
+
+# Python environments, caches, and build products
+.venv/
+venv/
+env/
+.conda/
+__pycache__/
+*.py[cod]
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+*~
+
+# Machine-specific Docker settings
+config/docker.env

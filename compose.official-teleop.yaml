@@ -1,0 +1,35 @@
+# Standalone official LeRobot baseline. Do not combine with custom teleop overlays.
+services:
+  collector:
+    environment:
+      LEADER_CALIBRATION_RELATIVE: "${LEADER_CALIBRATION_RELATIVE:?Select verified leader calibration}"
+    devices:
+      - "${LEADER_PORT:?Identify leader}:/dev/so101-leader:rw"
+      - "${FOLLOWER_PORT:?Identify follower}:/dev/so101-follower:rw"
+      - "${WORKSPACE_CAMERA:?Identify workspace camera}:/dev/video0:rw"
+      - "${WRIST_CAMERA:?Identify wrist camera}:/dev/video1:rw"
+    group_add:
+      - "${SERIAL_GID:?Set serial group}"
+      - "${VIDEO_GID:?Set video group}"
+    volumes:
+      - type: bind
+        source: ./calibration
+        target: /calibration
+        read_only: true
+      - type: bind
+        source: ./scripts/audit_lerobot_official.py
+        target: /opt/audit_lerobot_official.py
+        read_only: true
+      - type: bind
+        source: ./scripts/official_teleop.py
+        target: /opt/official_teleop.py
+        read_only: true
+      - type: bind
+        source: ./scripts/official_episode.py
+        target: /opt/official_episode.py
+        read_only: true
+      - type: bind
+        source: ./scripts/test_episode.py
+        target: /opt/test_episode.py
+        read_only: true
+    command: [python, /opt/official_teleop.py]

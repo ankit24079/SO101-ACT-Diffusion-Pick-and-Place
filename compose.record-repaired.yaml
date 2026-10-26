@@ -1,0 +1,18 @@
+# New collection batch after the lower-arm repair and verified ID 2 calibration.
+# Combine with compose.yaml and compose.official-teleop.yaml.
+services:
+  collector:
+    environment:
+      FOLLOWER_CALIBRATION_RELATIVE: robots/so101_follower/repaired-shoulder-1792448625156379989/cup_follower_repaired.json
+    volumes:
+      - type: bind
+        source: ./datasets/repaired-setup-20261019
+        target: /workspace/datasets
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./outputs/repaired-setup-20261019
+        target: /workspace/outputs
+        bind:
+          create_host_path: false
+    command: [python, /opt/official_teleop.py, --record]

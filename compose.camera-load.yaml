@@ -1,0 +1,18 @@
+# Camera-only recording workload; no serial controllers mapped.
+services:
+  collector:
+    devices:
+      - "${WORKSPACE_CAMERA:?Identify workspace camera}:/dev/video0:rw"
+      - "${WRIST_CAMERA:?Identify wrist camera}:/dev/video1:rw"
+    group_add:
+      - "${VIDEO_GID:?Set video group ID}"
+    volumes:
+      - type: bind
+        source: ./scripts/teleop_cameras.py
+        target: /opt/teleop_cameras.py
+        read_only: true
+      - type: bind
+        source: ./scripts/check_camera_recording_load.py
+        target: /opt/check_camera_recording_load.py
+        read_only: true
+    command: [python, /opt/check_camera_recording_load.py]

@@ -1,0 +1,5 @@
+# CPU wheel local versions prevent resolver replacement with CUDA packages.
+lerobot==0.6.1
+torch==2.10.0+cpu
+torchvision==0.25.0+cpu
+torchcodec==0.10.0

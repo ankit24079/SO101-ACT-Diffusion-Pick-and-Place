@@ -1,0 +1,16 @@
+# Read-only SDK READ requests plus installed source export; no configuration writes.
+services:
+  collector:
+    devices:
+      - "${LEADER_PORT:?Identify leader}:/dev/so101-leader:rw"
+      - "${FOLLOWER_PORT:?Identify follower}:/dev/so101-follower:rw"
+    group_add:
+      - "${SERIAL_GID:?Set serial group ID}"
+    volumes:
+      - type: bind
+        source: ./scripts/audit_lerobot_official.py
+        target: /opt/audit_lerobot_official.py
+        read_only: true
+        bind:
+          create_host_path: false
+    command: [python, /opt/audit_lerobot_official.py, --inspect-motors]

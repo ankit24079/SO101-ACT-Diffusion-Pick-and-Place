@@ -1,0 +1,13 @@
+# Follower torque-OFF only. No cameras or leader mapped.
+services:
+  collector:
+    devices:
+      - "${FOLLOWER_PORT:?Identify follower}:/dev/so101-follower:rw"
+    group_add:
+      - "${SERIAL_GID:?Set serial group}"
+    volumes:
+      - type: bind
+        source: ./scripts/release_follower_torque.py
+        target: /opt/release_follower_torque.py
+        read_only: true
+    command: [python, /opt/release_follower_torque.py]

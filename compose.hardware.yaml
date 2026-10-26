@@ -1,0 +1,10 @@
+# Opt-in only AFTER device identification and approval of hardware access.
+services:
+  collector:
+    devices:
+      - "${LEADER_PORT:?Identify leader first}:/dev/so101-leader:rw"
+      - "${FOLLOWER_PORT:?Identify follower first}:/dev/so101-follower:rw"
+      - "${WORKSPACE_CAMERA:?Identify workspace camera first}:/dev/workspace-camera:rw"
+    group_add:
+      - "${SERIAL_GID:?Set serial device group ID}"
+      - "${VIDEO_GID:?Set video device group ID}"

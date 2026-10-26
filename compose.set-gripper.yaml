@@ -1,0 +1,15 @@
+# Explicitly authorized calibration write: follower ID 6 min/max only.
+services:
+  collector:
+    devices:
+      - "${FOLLOWER_PORT:?Identify follower}:/dev/so101-follower:rw"
+    group_add:
+      - "${SERIAL_GID:?Set serial group ID}"
+    volumes:
+      - type: bind
+        source: ./scripts/set_follower_gripper_range.py
+        target: /opt/set_follower_gripper_range.py
+        read_only: true
+        bind:
+          create_host_path: false
+    command: [python, /opt/set_follower_gripper_range.py]

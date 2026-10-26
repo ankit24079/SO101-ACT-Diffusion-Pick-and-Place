@@ -1,0 +1,13 @@
+# Read-only follower check. No leader/cameras mapped; no motor writes permitted.
+services:
+  collector:
+    devices:
+      - "${FOLLOWER_PORT:?Identify follower}:/dev/so101-follower:rw"
+    group_add:
+      - "${SERIAL_GID:?Set serial group}"
+    volumes:
+      - type: bind
+        source: ./scripts/check_new_leader.py
+        target: /opt/check_new_leader.py
+        read_only: true
+    command: [python, /opt/check_new_leader.py, --role, follower, --joint, shoulder_lift]

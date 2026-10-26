@@ -1,0 +1,16 @@
+# Add to compose.yaml + compose.teleop-check.yaml for the approved camera/motion check.
+services:
+  collector:
+    devices:
+      - "${WORKSPACE_CAMERA:?Identify workspace camera}:/dev/video0:rw"
+      - "${WRIST_CAMERA:?Identify wrist camera}:/dev/video1:rw"
+    group_add:
+      - "${VIDEO_GID:?Set video device group ID}"
+    volumes:
+      - type: bind
+        source: ./scripts/teleop_cameras.py
+        target: /opt/teleop_cameras.py
+        read_only: true
+        bind:
+          create_host_path: false
+    command: [python, /opt/teleop_check.py, --run, --cameras]

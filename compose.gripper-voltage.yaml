@@ -1,0 +1,16 @@
+# Read-only manual leader-gripper diagnostic. No torque, calibration, or goal writes.
+services:
+  collector:
+    devices:
+      - "${LEADER_PORT:?Identify leader}:/dev/so101-leader:rw"
+      - "${FOLLOWER_PORT:?Identify follower}:/dev/so101-follower:rw"
+    group_add:
+      - "${SERIAL_GID:?Set serial group ID}"
+    volumes:
+      - type: bind
+        source: ./scripts/monitor_gripper_voltage.py
+        target: /opt/monitor_gripper_voltage.py
+        read_only: true
+        bind:
+          create_host_path: false
+    command: [python, /opt/monitor_gripper_voltage.py]

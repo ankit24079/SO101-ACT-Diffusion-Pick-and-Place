@@ -1,0 +1,5 @@
+# Add alongside compose.hardware.yaml only for a verified second camera.
+services:
+  collector:
+    devices:
+      - "${WRIST_CAMERA:?Identify wrist camera first}:/dev/wrist-camera:rw"

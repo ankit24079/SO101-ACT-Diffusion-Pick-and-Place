@@ -1,0 +1,13 @@
+# Pure offline journal recovery: no serial controllers or cameras mapped.
+services:
+  collector:
+    volumes:
+      - type: bind
+        source: ./scripts/recover_official_episode.py
+        target: /opt/recover_official_episode.py
+        read_only: true
+      - type: bind
+        source: ./scripts/test_episode.py
+        target: /opt/test_episode.py
+        read_only: true
+    command: [python, /opt/recover_official_episode.py, --help]

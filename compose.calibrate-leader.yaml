@@ -1,0 +1,20 @@
+# Explicitly reviewed calibration writes to replacement LEADER only.
+services:
+  collector:
+    devices:
+      - "${LEADER_PORT:?Identify replacement leader}:/dev/so101-leader:rw"
+    group_add:
+      - "${SERIAL_GID:?Set serial group ID}"
+    volumes:
+      - type: bind
+        source: ./calibration
+        target: /calibration
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./scripts/calibrate_replacement_leader.py
+        target: /opt/calibrate_replacement_leader.py
+        read_only: true
+        bind:
+          create_host_path: false
+    command: [python, /opt/calibrate_replacement_leader.py]

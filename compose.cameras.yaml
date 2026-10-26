@@ -1,0 +1,16 @@
+# Camera-only check. No serial controllers are mapped.
+services:
+  collector:
+    devices:
+      - "${WORKSPACE_CAMERA:?Identify workspace camera}:/dev/video0:rw"
+      - "${WRIST_CAMERA:?Identify wrist camera}:/dev/video1:rw"
+    group_add:
+      - "${VIDEO_GID:?Set host video group ID}"
+    volumes:
+      - type: bind
+        source: ./scripts/check_cameras.py
+        target: /opt/check_cameras.py
+        read_only: true
+        bind:
+          create_host_path: false
+    command: [python, /opt/check_cameras.py]

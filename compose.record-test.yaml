@@ -1,0 +1,11 @@
+# Add to the teleop/camera overlays for ONE approved local test episode.
+services:
+  collector:
+    volumes:
+      - type: bind
+        source: ./scripts/test_episode.py
+        target: /opt/test_episode.py
+        read_only: true
+        bind:
+          create_host_path: false
+    command: [python, /opt/teleop_check.py, --record-test, --relative-start]

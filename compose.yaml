@@ -1,0 +1,45 @@
+name: so101-act-cup-project
+services:
+  collector:
+    image: so101-collector:lerobot-0.6.1
+    build:
+      context: .
+    user: "${HOST_UID:?Set HOST_UID in config/docker.env}:${HOST_GID:?Set HOST_GID in config/docker.env}"
+    init: true
+    stdin_open: true
+    tty: true
+    working_dir: /workspace
+    environment:
+      # Numeric host UID need not have an /etc/passwd entry in this image.
+      USER: collector
+      LOGNAME: collector
+      TORCHINDUCTOR_CACHE_DIR: /workspace/.cache/torchinductor
+      HOME: /tmp/lerobot-home
+      HF_HOME: /workspace/.cache/huggingface
+      HF_HUB_OFFLINE: "1"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    volumes:
+      - type: bind
+        source: ./datasets
+        target: /workspace/datasets
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./outputs
+        target: /workspace/outputs
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./logs
+        target: /workspace/logs
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./.cache
+        target: /workspace/.cache
+        bind:
+          create_host_path: false
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    shm_size: 512mb
+    # Default command only checks software; no devices are mapped here.

@@ -1,0 +1,7 @@
+# Allow-list the build context so data and local secrets are never sent.
+**
+!Dockerfile
+!config/
+!config/constraints.txt
+!scripts/
+!scripts/check_environment.py

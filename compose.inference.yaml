@@ -1,0 +1,14 @@
+services:
+  collector:
+    devices:
+      - "${FOLLOWER_PORT:?Identify follower}:/dev/so101-follower:rw"
+      - "${WORKSPACE_CAMERA:?Identify workspace camera}:/dev/video0:rw"
+      - "${WRIST_CAMERA:?Identify wrist camera}:/dev/video1:rw"
+    group_add:
+      - "${SERIAL_GID:?Set serial group}"
+      - "${VIDEO_GID:?Set video group}"
+    volumes:
+      - /home/srijan/Desktop/SO101-ACT-checkpoints:/models:ro
+      - ./scripts:/opt/scripts:ro
+      - ./calibration:/calibration:ro
+    command: [python, /opt/scripts/check_act_live.py]
